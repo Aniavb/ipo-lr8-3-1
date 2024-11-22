@@ -3,6 +3,7 @@ with open("dump.json", "r",   encoding = "utf-8") as file:
     read_content = file.read()
     no_json = json.loads(read_content)
 count = 0
+num = 0
 close_menu = True
 def menu():
     print("1. Вывести все записи")
@@ -31,17 +32,25 @@ def one():
         print("Некорректный ввод")
 def new():
     global count
+    global num
     count +=1
+    num += 1
+    flag = True
     with open("dump.json", "w",   encoding = "utf-8") as file:
-        new = {}
-        new["id"] = input("Введите номер записи: ")
-        new["name"] = input("Введите название звезды: ")
-        new["constellation"] = input("Введите название созвездия: ")
-        new["is_visible"] = input("Можно ли увидеть звезду без телескопа (да/нет): ")
-        new["radius"] = input("Введите радиус звезды: ")
-        no_json.append(new)
-        print("Запись добавлена")
-        json.dump(no_json, file, indent = 4)
+        name = input("Введите название звезды: ")
+        constellation = input("Введите название созвездия: ")
+        is_visible = input("Можно ли увидеть звезду без телескопа (да/нет): ")
+        radius = input("Введите радиус звезды: ")
+        try:
+            radius = int(radius)
+            flag = False
+            new = { 'id': num, 'name':name, 'constellation': constellation, 'is_visible': 'да' if is_visible.lower() == 'да' else 'нет', 'radius':radius}
+            no_json.append(new)
+            print("Запись добавлена")
+            json.dump(no_json, file, indent = 4)
+        except:
+            if flag:
+                print("Ошибка")
 def delete():
     global count
     count += 1
